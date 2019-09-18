@@ -381,12 +381,14 @@ function distances(name,linkdata,pdb)
   av_nequal = Vector{Float64}(undef,ndcontact)
   p_random = Vector{Float64}(undef,ndcontact)
   n_random = Vector{Int64}(undef,ndcontact)
+  f_size = Vector{Float64}(undef,ndcontact)
 
   for id in 1:ndcontact
     dcon = dcontact[id]
 
     # Number of contacts 
     nc = number_of_contacts(cas,ncas,dcon)
+    f_size[id] = nc / ncas
 
     # Computing random result
     n_random[id] = 0
@@ -444,7 +446,7 @@ function distances(name,linkdata,pdb)
  
   return d_xl, d_dca, types_xl, types_dca, 
          xl_surfdist, dca_surfdist, all_ca_surfdist, 
-         cc_obs, cc_rand, p_random,
+         cc_obs, cc_rand, p_random, f_size,
          max_xl_surfdist, max_dca_surfdist, max_contact_surfdist
 
 end
@@ -495,6 +497,7 @@ all_dca_surfdist = Vector{Float64}(undef,0)
 all_cc_obs = Vector{Float64}(undef,length(structs))
 all_cc_rand = Matrix{Float64}(undef,length(structs),ndcontact)
 all_p_rand = Matrix{Float64}(undef,length(structs),ndcontact)
+all_f_size = Matrix{Float64}(undef,length(structs),ndcontact)
 all_xl_surfdist = Vector{Float64}(undef,0)
 all_dca_surfdist = Vector{Float64}(undef,0)
 all_contact_surfdist = Vector{Float64}(undef,0)
@@ -512,11 +515,12 @@ for s in structs
   linkdata = "../$s/$uf"
   d_xl, d_dca, types_xl, types_dca, 
        xl_surfdist, dca_surfdist, contact_surfdist,
-       cc_obs, cc_rand, p_rand,
+       cc_obs, cc_rand, p_rand, f_size,
        max_xl_surfdist, max_dca_surfdist, max_contact_surfdist = distances(s,linkdata,pdb)
   all_cc_obs[ipdb] = cc_obs
   all_cc_rand[ipdb,:] = cc_rand
   all_p_rand[ipdb,:] = p_rand
+  all_f_size[ipdb,:] = f_size
   append!(all_xl,d_xl)
   append!(all_dca,d_dca)
   append!(all_xl_surfdist,xl_surfdist)

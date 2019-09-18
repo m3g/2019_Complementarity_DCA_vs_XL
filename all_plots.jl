@@ -8,6 +8,7 @@ plot(layout=(2,2))
 sp = 1
 
 type = "cc"  
+type = "fsize"
 type = "p"
 
 if type == "cc"
@@ -27,6 +28,16 @@ if type == "p"
   for i in 1:length(structs)
     c = get(ColorSchemes.rainbow,i./length(structs))
     plot!(subplot=1,dcontact,all_p_rand[i,:],linewidth=2,label=structs[i],color=c)
+  end
+  #annotate!([( 9.1,  0.03, text("DCA x XL",12,:center) )],subplot=1)
+  #annotate!([( 9.5,  0.60, text("Random",12,:center) )],subplot=1)
+end
+if type == "fsize"
+  plot!(xlabel=L"\textrm{\sffamily Number of contacts / Number of residues}")
+  plot!(ylabel=L"\textrm{\sffamily Probability of~}n\leq n_{XL\cap DCA}")
+  for i in 1:length(structs)
+    c = get(ColorSchemes.rainbow,i./length(structs))
+    plot!(subplot=1,all_f_size[i,:],all_p_rand[i,:],linewidth=2,label=structs[i],color=c)
   end
   #annotate!([( 9.1,  0.03, text("DCA x XL",12,:center) )],subplot=1)
   #annotate!([( 9.5,  0.60, text("Random",12,:center) )],subplot=1)
@@ -96,8 +107,8 @@ plot()
 
 xl_bin = ( maximum(all_xl_surfdist) - minimum(all_xl_surfdist) ) / 40
 ndcabins = round(Int64,( maximum(all_dca_surfdist) - minimum(all_dca_surfdist) ) / xl_bin)
-histogram!(all_dca_surfdist,bins=ndcabins,label="DCAs",alpha=0.5,color=dcac)
-histogram!(all_xl_surfdist,bins=40,label="XLs",alpha=1.0,color=xlc)
+histogram!(all_dca_surfdist,bins=ndcabins,label="DCA residues",alpha=0.5,color=dcac)
+histogram!(all_xl_surfdist,bins=40,label="XL residues",alpha=1.0,color=xlc)
 histogram!(xlabel=L"\textrm{\sffamily C}\alpha\textrm{\sffamily~distance to surface /}\textrm{\sffamily~\AA}")
 histogram!(ylabel=L"\textrm{\sffamily Count}")
 
@@ -106,7 +117,7 @@ histogram!(ylabel=L"\textrm{\sffamily Count}")
 x, y = M3GTools.density(all_contact_surfdist,vmin=1,vmax=12.5,step=0.5,nbins=25)
 scale = 400/maximum(y)
 y = scale*y
-plot!(x,y,label="All contacts",linewidth=3,color="green",alpha=1.0)
+plot!(x,y,label="All residues",linewidth=3,color="green",alpha=1.0)
 
 m1 = mean(all_dca_surfdist)
 m2 = mean(all_xl_surfdist)
