@@ -1,0 +1,40 @@
+#####
+# Options/Parameters file for Rosetta 3.9 Abinitiorelax as of 2019_Complementarity_DCA_vs_XL
+#####
+
+# Ab initio options
+
+-abinitio
+ -fastrelax
+ -increase_cycles 5
+ -rg_reweight 0.25
+
+# Input files
+
+-in
+ -file
+  -fasta ../FIXED_INPUT/1c52.fasta
+  -frag3 ../FIXED_INPUT/1c52_aat000_03_05.200_v1_3
+  -frag9 ../FIXED_INPUT/1c52_aat000_09_05.200_v1_3
+
+# Database path
+
+ -path
+  -database ~/software/ROSETTA/main/database/
+
+# Output options
+
+-out
+ -nstruct 1
+
+ -file
+  -fullatom
+  -silent folding_silent.out
+
+# Constraints
+
+-constraints
+  -cst_file ./cst
+  -cst_weight 1
+  -cst_fa_file ./cst
+  -cst_fa_weight 1
